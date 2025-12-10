@@ -13,43 +13,49 @@
 
   <button id="play-button" style="padding: 10px 20px; font-size: 16px;">Watch Stream</button>
 
-  <!-- Load the Twitch embed script -->
-  <script src="https://player.twitch.tv/js/embed/v1.js"></script>
+  function loadStream() {
+  if (player) return;
 
-  <!-- Create a Twitch.Player object. This will render within the twitch-autoplay-test.vercel.app div -->
-  <script type="text/javascript">
-    var player = null;
-    var embedContainer = document.getElementById('twitch-embed');
-    var playButton = document.getElementById('play-button');
+  // Function to initialization player
+  const initPlayer = () => {
+  embedContainer.style.display = 'block';
+  player = new Twitch.Player("twitch-embed", {
+  channel: "marbleplanetstreamer",
+  muted: false,
+  parent: ["twitch-autoplay-test.vercel.app"]
+  });
+  playButton.innerText = "Close Stream";
+  };
 
-    function loadStream() {
-      if (player) return;
-      embedContainer.style.display = 'block';
-      player = new Twitch.Player("twitch-embed", {
-        channel: "marbleplanetstreamer",
-        muted: false,
-        parent: ["twitch-autoplay-test.vercel.app"]
-      });
-      playButton.innerText = "Close Stream";
-    }
+  // Check if script is already loaded
+  if (typeof Twitch !== 'undefined') {
+  initPlayer();
+  } else {
+  // Load script dynamically
+  var script = document.createElement('script');
+  script.src = 'https://player.twitch.tv/js/embed/v1.js';
+  script.onload = initPlayer;
+  document.body.appendChild(script);
+  }
+  }
 
-    function stopStream() {
-      embedContainer.innerHTML = ''; // Remove the player elements
-      embedContainer.style.display = 'none';
-      player = null; // Reset player instance
-      playButton.innerText = "Watch Stream";
-    }
+  function stopStream() {
+  embedContainer.innerHTML = ''; // Remove the player elements
+  embedContainer.style.display = 'none';
+  player = null; // Reset player instance
+  playButton.innerText = "Watch Stream";
+  }
 
-    playButton.addEventListener('click', function () {
-      if (!player) {
-        loadStream();
-      } else {
-        stopStream();
-      }
-    });
+  playButton.addEventListener('click', function () {
+  if (!player) {
+  loadStream();
+  } else {
+  stopStream();
+  }
+  });
 
-    // Auto-load after 5 seconds
-    setTimeout(loadStream, 5000);
+  // Auto-load after 5 seconds
+  setTimeout(loadStream, 5000);
   </script>
 </body>
 
