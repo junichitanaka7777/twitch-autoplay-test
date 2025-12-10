@@ -18,20 +18,32 @@
 
   <!-- Create a Twitch.Player object. This will render within the twitch-autoplay-test.vercel.app div -->
   <script type="text/javascript">
-    document.getElementById('play-button').addEventListener('click', function () {
-      // Hide button
-      this.style.display = 'none';
+    var player = null;
+    var embedContainer = document.getElementById('twitch-embed');
+    var playButton = document.getElementById('play-button');
 
-      // Show embed container
-      var embedContainer = document.getElementById('twitch-embed');
-      embedContainer.style.display = 'block';
-
-      // Initialize player
-      new Twitch.Player("twitch-embed", {
-        channel: "marbleplanetstreamer",
-        muted: false,
-        parent: ["twitch-autoplay-test.vercel.app"]
-      });
+    playButton.addEventListener('click', function () {
+      if (!player) {
+        // First time initialization
+        embedContainer.style.display = 'block';
+        player = new Twitch.Player("twitch-embed", {
+          channel: "marbleplanetstreamer",
+          muted: false,
+          parent: ["twitch-autoplay-test.vercel.app"]
+        });
+        playButton.innerText = "Hide Stream";
+      } else {
+        // Toggle visibility
+        if (embedContainer.style.display === 'none') {
+          embedContainer.style.display = 'block';
+          player.play();
+          playButton.innerText = "Hide Stream";
+        } else {
+          embedContainer.style.display = 'none';
+          player.pause();
+          playButton.innerText = "Show Stream";
+        }
+      }
     });
   </script>
 </body>
