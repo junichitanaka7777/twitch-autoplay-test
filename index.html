@@ -9,17 +9,29 @@
 
 <body>
   <!-- Add a twitch-autoplay-test.vercel.app for the Twitch embed -->
-  <div id="twitch-embed"></div>
+  <div id="twitch-embed" style="display: none;"></div>
+
+  <button id="play-button" style="padding: 10px 20px; font-size: 16px;">Watch Stream</button>
 
   <!-- Load the Twitch embed script -->
   <script src="https://player.twitch.tv/js/embed/v1.js"></script>
 
   <!-- Create a Twitch.Player object. This will render within the twitch-autoplay-test.vercel.app div -->
   <script type="text/javascript">
-    new Twitch.Player("twitch-embed", {
-      channel: "marbleplanetstreamer",
-      muted: false,
-      parent: ["twitch-autoplay-test.vercel.app"]
+    document.getElementById('play-button').addEventListener('click', function () {
+      // Hide button
+      this.style.display = 'none';
+
+      // Show embed container
+      var embedContainer = document.getElementById('twitch-embed');
+      embedContainer.style.display = 'block';
+
+      // Initialize player
+      new Twitch.Player("twitch-embed", {
+        channel: "marbleplanetstreamer",
+        muted: false,
+        parent: ["twitch-autoplay-test.vercel.app"]
+      });
     });
   </script>
 </body>
