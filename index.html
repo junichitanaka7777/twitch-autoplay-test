@@ -24,25 +24,20 @@
 
     playButton.addEventListener('click', function () {
       if (!player) {
-        // First time initialization
+        // Turn ON: Initialize player
         embedContainer.style.display = 'block';
         player = new Twitch.Player("twitch-embed", {
           channel: "marbleplanetstreamer",
           muted: false,
           parent: ["twitch-autoplay-test.vercel.app"]
         });
-        playButton.innerText = "Hide Stream";
+        playButton.innerText = "Close Stream";
       } else {
-        // Toggle visibility
-        if (embedContainer.style.display === 'none') {
-          embedContainer.style.display = 'block';
-          player.play();
-          playButton.innerText = "Hide Stream";
-        } else {
-          embedContainer.style.display = 'none';
-          player.pause();
-          playButton.innerText = "Show Stream";
-        }
+        // Turn OFF: Remove player and hide
+        embedContainer.innerHTML = ''; // Remove the player elements
+        embedContainer.style.display = 'none';
+        player = null; // Reset player instance
+        playButton.innerText = "Watch Stream";
       }
     });
   </script>
